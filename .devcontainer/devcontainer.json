@@ -57,6 +57,7 @@
                 "ms-python.debugpy",
                 "ms-python.vscode-pylance",
                 "ms-python.black-formatter",
+                "ms-toolsai.jupyter",
                 "eamodio.gitlens",
                 "mechatroner.rainbow-csv",
                 "tamasfe.even-better-toml",
