@@ -1,0 +1,77 @@
+// https://code.visualstudio.com/docs/devcontainers/tutorial#_devcontainerjson
+{
+    "name": "DINOv2",
+
+    // https://containers.dev/implementors/json_reference/#image-specific
+    "build": {
+        "dockerfile": "Dockerfile",  // Relative to this file.
+        "context": "..",  // Path that the Docker build should be run from relative to this file.
+        "args": {
+            "USERNAME": "developer"
+        },
+        "options": [
+            "--tag=dev/dinov2:latest",
+            "--platform=linux/amd64"
+        ]
+    },
+    "workspaceFolder": "/home/ws",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ws/src,type=bind",
+    "runArgs": [
+        "--platform=linux/amd64"
+    ],
+
+    // https://containers.dev/implementors/json_reference/#general-properties
+    "containerUser": "developer",
+    "containerEnv": {
+        "SHELL": "/bin/bash"
+    },
+    "mounts": [
+        "source=/Users/yusong/Documents/venture/datasets/trichotrack,target=/home/ws/ds,type=bind"
+    ],
+    "privileged": false,
+
+    // https://containers.dev/implementors/features/
+    // https://containers.dev/features
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {
+            "version": "1.2.0"
+        },
+        "ghcr.io/devcontainers/features/git-lfs:1": {
+            "version": "1.2.0"
+        }
+    },
+
+    "remoteUser": "developer",  // Same as `build.args.USERNAME`.
+    "remoteEnv": {
+        "SHELL": "/bin/bash"
+    },
+    "customizations": {
+        // https://containers.dev/supporting#visual-studio-code
+        "vscode": {
+            // https://github.com/microsoft/vscode-remote-release/issues/8169#issuecomment-1645266039
+            "settings": {
+                "extensions.verifySignature": false
+            },
+            "extensions":[
+                "ms-python.python",
+                "ms-python.debugpy",
+                "ms-python.vscode-pylance",
+                "ms-python.black-formatter",
+                "eamodio.gitlens",
+                "mechatroner.rainbow-csv",
+                "tamasfe.even-better-toml",
+                "redhat.vscode-yaml",
+                "njpwerner.autodocstring",
+                "streetsidesoftware.code-spell-checker"
+            ]
+        }
+    },
+
+    // https://containers.dev/implementors/json_reference/#lifecycle-scripts
+    // "initializeCommand": "",
+    // "onCreateCommand": "",
+    // "updateContentCommand": "",
+    "postCreateCommand": "/bin/bash"
+    // "postStartCommand": "",
+    // "postAttachCommand": ""
+}
