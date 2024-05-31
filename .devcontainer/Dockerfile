@@ -7,7 +7,7 @@
 # https://docs.docker.com/language/python/build-images/
 FROM python:3.9.19-slim-bullseye
 
-ARG USERNAME=USERNAME
+ARG USERNAME
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 

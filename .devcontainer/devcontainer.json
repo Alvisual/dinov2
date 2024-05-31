@@ -21,7 +21,7 @@
     ],
 
     // https://containers.dev/implementors/json_reference/#general-properties
-    "containerUser": "developer",
+    "containerUser": "developer",  // Must exist in the image.
     "containerEnv": {
         "SHELL": "/bin/bash"
     },
@@ -41,7 +41,7 @@
         }
     },
 
-    "remoteUser": "developer",  // Same as `build.args.USERNAME`.
+    "remoteUser": "developer",  // Must exist in the image.
     "remoteEnv": {
         "SHELL": "/bin/bash"
     },
