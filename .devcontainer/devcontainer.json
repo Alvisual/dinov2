@@ -43,7 +43,7 @@
 
     "remoteUser": "developer",  // Must exist in the image.
     "remoteEnv": {
-        "SHELL": "/bin/bash"
+        "PATH": "${containerEnv:PATH}:/home/developer/.local/bin"
     },
     "customizations": {
         // https://containers.dev/supporting#visual-studio-code
@@ -72,7 +72,7 @@
     // "initializeCommand": "",
     // "onCreateCommand": "",
     // "updateContentCommand": "",
-    "postCreateCommand": "/bin/bash"
+    "postCreateCommand": "pip install ipykernel -U --user --force-reinstall"
     // "postStartCommand": "",
     // "postAttachCommand": ""
 }
