@@ -20,5 +20,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt requirements.txt
-RUN pip install --timeout=600 --no-cache-dir -r requirements.txt
+# COPY requirements.txt requirements.txt
+# RUN pip install --timeout=600 --no-cache-dir -r requirements.txt
+RUN pip install --timeout=600 --no-cache-dir torch==2.0.0 torchvision==0.15.0 --index-url https://download.pytorch.org/whl/cpu
+RUN pip install --timeout=600 --no-cache-dir omegaconf torchmetrics==0.10.3 fvcore iopath submitit
