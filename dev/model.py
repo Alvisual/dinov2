@@ -175,7 +175,7 @@ if __name__ == "__main__":
         )
 
     model = NaiveDino(image_shape=(480, 640))
-    batch_size, ensemble = 100, True
+    batch_size, ensemble = 50, True
     start_id, end_id = 0, 10000 - 1
 
     # def print_diff(x, y, title: str):
