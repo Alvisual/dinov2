@@ -163,7 +163,6 @@ if __name__ == "__main__":
     import cv2
 
     IMG_DIR = Path("/Users/yusong/Documents/venture/datasets/trichotrack/raw")
-    DST_DIR = Path("/Users/yusong/Documents/dinov2/dev")
 
     def load_batch_images(start_id: int, end_id: int) -> BHWCUI8:
         return np.stack(
@@ -174,9 +173,12 @@ if __name__ == "__main__":
             axis=0,
         )
 
-    model = NaiveDino(image_shape=(480, 640))
-    batch_size, ensemble = 50, True
+    arch = Arch.SMALL
+    model = NaiveDino(image_shape=(480, 640), backbone_arch=arch)
+    batch_size, ensemble = 100, True
     start_id, end_id = 0, 10000 - 1
+    dst_dir = Path(f"/Users/yusong/Documents/dinov2/dev/{arch}{'-ensemble' if ensemble else ''}")  # fmt: skip
+    dst_dir.mkdir(parents=True, exist_ok=True)
 
     # def print_diff(x, y, title: str):
     #     print(f"{title}: {np.abs(x - y).mean()}")
@@ -207,13 +209,13 @@ if __name__ == "__main__":
     # cv2.imshow("token-ensemble", model.visualize_patchtokens(c3["x_norm_patchtokens"])[0])
     # cv2.waitKey()
 
-    for b_sid in range(0, end_id + 1, batch_size):
+    for b_sid in range(start_id, end_id + 1, batch_size):
         b_eid = min(b_sid + batch_size - 1, end_id)
         print(f"{datetime.now()} - Processing images {b_sid} - {b_eid} ...")
         batch_images = load_batch_images(b_sid, b_eid)
         batch_tokens = model.inference(batch_images, ensemble=ensemble)
         np.savez_compressed(
-            DST_DIR.joinpath(f"{b_sid}_{b_eid}"),
+            dst_dir.joinpath(f"{b_sid}_{b_eid}"),
             x_norm_clstoken=batch_tokens["x_norm_clstoken"],
             x_norm_regtokens=batch_tokens["x_norm_regtokens"],
             x_norm_patchtokens=batch_tokens["x_norm_patchtokens"],
@@ -222,7 +224,7 @@ if __name__ == "__main__":
     # for b_sid in range(0, end_id + 1, batch_size):
     #     b_eid = min(b_sid + batch_size - 1, end_id)
     #     batch_images = load_batch_images(b_sid, b_eid)
-    #     batch_tokens = np.load(DST_DIR.joinpath(f"{b_sid}_{b_eid}.npz"))
+    #     batch_tokens = np.load(dst_dir.joinpath(f"{b_sid}_{b_eid}.npz"))
     #     patch_tokens = model.visualize_patchtokens(batch_tokens["x_norm_patchtokens"])
     #     for n in range(len(batch_images)):
     #         cv2.imshow("img", batch_images[n])
