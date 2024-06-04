@@ -240,7 +240,7 @@ if __name__ == "__main__":
         assert len(batch_cls_tokens) == len(batch_pat_tokens) == b_eid - b_sid + 1
         for n, (cls_token, pat_token) in enumerate(zip(batch_cls_tokens, batch_pat_tokens)):
             img_id = b_sid + n
-            assert len(cls_tokens) == len(pat_tokens) == img_id
+            assert len(cls_tokens) == len(pat_tokens) == img_id - start_id
             cls_tokens.append(cls_token)
             pat_tokens.append(pat_token.mean(axis=0))
     np.savez_compressed(

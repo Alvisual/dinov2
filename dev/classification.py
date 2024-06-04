@@ -69,7 +69,7 @@ svm = SVC(
 )
 
 knn = KNeighborsClassifier(
-    n_neighbors=10,
+    n_neighbors=8,
     weights="uniform",
     algorithm="brute",
     metric="cosine",
