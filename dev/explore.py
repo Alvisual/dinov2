@@ -5,33 +5,10 @@ import numpy as np
 
 
 IMG_DIR = Path("/Users/yusong/Documents/venture/datasets/trichotrack/raw")
-TOKEN_DIR = Path("/Users/yusong/Documents/dinov2/dev/vitl14-ensemble")
+TOKEN_PATH = Path("/Users/yusong/Documents/dinov2/dev/vitl14-ensemble/condensed_0_9999.npz")
 
 
-batch_size, ensemble = 50, True
-start_id, end_id = 0, 10000 - 1
-
-
-# cls_tokens, pat_tokens = [], []
-# for b_sid in range(0, end_id + 1, batch_size):
-#     b_eid = min(b_sid + batch_size - 1, end_id)
-#     batch_tokens = np.load(TOKEN_DIR.joinpath(f"{b_sid}_{b_eid}.npz"))
-#     batch_cls_tokens = batch_tokens["x_norm_clstoken"]
-#     batch_pat_tokens = batch_tokens["x_norm_patchtokens"]
-#     assert len(batch_cls_tokens) == len(batch_pat_tokens) == b_eid - b_sid + 1
-#     for n, (cls_token, pat_token) in enumerate(zip(batch_cls_tokens, batch_pat_tokens)):
-#         img_id = b_sid + n
-#         assert len(cls_tokens) == len(pat_tokens) == img_id
-#         cls_tokens.append(cls_token)
-#         pat_tokens.append(pat_token.mean(axis=0))
-# np.savez_compressed(
-#     TOKEN_DIR.joinpath(f"condensed_{start_id}_{end_id}"),
-#     cls_tokens=np.stack(cls_tokens, axis=0),
-#     pat_tokens=np.stack(pat_tokens, axis=0),
-# )
-
-
-tokens = np.load(TOKEN_DIR.joinpath(f"condensed_{start_id}_{end_id}.npz"))
+tokens = np.load(TOKEN_PATH)
 cls_tokens = tokens["cls_tokens"]
 pat_tokens = tokens["pat_tokens"]
 cls_tokens /= np.linalg.norm(cls_tokens, axis=1, keepdims=True)

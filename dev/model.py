@@ -221,7 +221,7 @@ if __name__ == "__main__":
             x_norm_patchtokens=batch_tokens["x_norm_patchtokens"],
         )
 
-    # for b_sid in range(0, end_id + 1, batch_size):
+    # for b_sid in range(start_id, end_id + 1, batch_size):
     #     b_eid = min(b_sid + batch_size - 1, end_id)
     #     batch_images = load_batch_images(b_sid, b_eid)
     #     batch_tokens = np.load(dst_dir.joinpath(f"{b_sid}_{b_eid}.npz"))
@@ -230,3 +230,21 @@ if __name__ == "__main__":
     #         cv2.imshow("img", batch_images[n])
     #         cv2.imshow("tok", patch_tokens[n])
     #         cv2.waitKey()
+
+    cls_tokens, pat_tokens = [], []
+    for b_sid in range(start_id, end_id + 1, batch_size):
+        b_eid = min(b_sid + batch_size - 1, end_id)
+        batch_tokens = np.load(dst_dir.joinpath(f"{b_sid}_{b_eid}.npz"))
+        batch_cls_tokens = batch_tokens["x_norm_clstoken"]
+        batch_pat_tokens = batch_tokens["x_norm_patchtokens"]
+        assert len(batch_cls_tokens) == len(batch_pat_tokens) == b_eid - b_sid + 1
+        for n, (cls_token, pat_token) in enumerate(zip(batch_cls_tokens, batch_pat_tokens)):
+            img_id = b_sid + n
+            assert len(cls_tokens) == len(pat_tokens) == img_id
+            cls_tokens.append(cls_token)
+            pat_tokens.append(pat_token.mean(axis=0))
+    np.savez_compressed(
+        dst_dir.joinpath(f"condensed_{start_id}_{end_id}"),
+        cls_tokens=np.stack(cls_tokens, axis=0),
+        pat_tokens=np.stack(pat_tokens, axis=0),
+    )
